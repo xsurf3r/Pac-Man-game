@@ -17,7 +17,7 @@ yellow   = ( 255, 255,0)
 Trollicon=pygame.image.load('images/Trollman.png')
 pygame.display.set_icon(Trollicon)
 
-#Add music
+#Mūzika
 pygame.mixer.init()
 pygame.mixer.music.load('pacman.mp3')
 pygame.mixer.music.play(-1, 0.0)
@@ -29,7 +29,7 @@ class Wall(pygame.sprite.Sprite):
         # Call the parent's constructor
         pygame.sprite.Sprite.__init__(self)
    
-        # Make a blue wall, of the size specified in the parameters
+        # Zilā siena
         self.image = pygame.Surface([width, height])
         self.image.fill(color)
   
@@ -38,12 +38,12 @@ class Wall(pygame.sprite.Sprite):
         self.rect.top = y
         self.rect.left = x
 
-# This creates all the walls in room 1
+# Sienas pirmajā telpā
 def setupRoomOne(all_sprites_list):
-    # Make the walls. (x_pos, y_pos, width, height)
+    # Sienas. (x_pos, y_pos, width, height)
     wall_list=pygame.sprite.RenderPlain()
      
-    # This is a list of walls. Each is in the form [x, y, width, height]
+    # Sienu skaits. [x, y, width, height]
     walls = [ [0,0,6,600],
               [0,0,600,6],
               [0,600,606,6],
@@ -84,13 +84,13 @@ def setupRoomOne(all_sprites_list):
               [360,540,126,6]
             ]
      
-    # Loop through the list. Create the wall, add it to the list
+  
     for item in walls:
         wall=Wall(item[0],item[1],item[2],item[3],blue)
         wall_list.add(wall)
         all_sprites_list.add(wall)
          
-    # return our new list
+    
     return wall_list
  
 def setupGate(all_sprites_list):
@@ -99,64 +99,59 @@ def setupGate(all_sprites_list):
       all_sprites_list.add(gate)
       return gate
 
-# This class represents the ball        
-# It derives from the "Sprite" class in Pygame
+# Dzeltenas ogas      
+
 class Block(pygame.sprite.Sprite):
      
-    # Constructor. Pass in the color of the block, 
-    # and its x and y position
+    
     def __init__(self, color, width, height):
-        # Call the parent class (Sprite) constructor
+        
         pygame.sprite.Sprite.__init__(self) 
  
-        # Create an image of the block, and fill it with a color.
-        # This could also be an image loaded from the disk.
+        
         self.image = pygame.Surface([width, height])
         self.image.fill(white)
         self.image.set_colorkey(white)
         pygame.draw.ellipse(self.image,color,[0,0,width,height])
  
-        # Fetch the rectangle object that has the dimensions of the image
-        # image.
-        # Update the position of this object by setting the values 
-        # of rect.x and rect.y
+        
         self.rect = self.image.get_rect() 
 
-# This class represents the bar at the bottom that the player controls
+
 class Player(pygame.sprite.Sprite):
   
-    # Set speed vector
+    # Ātruma vektori
     change_x=0
     change_y=0
   
-    # Constructor function
+    
     def __init__(self,x,y, filename):
-        # Call the parent's constructor
+        
         pygame.sprite.Sprite.__init__(self)
    
-        # Set height, width
+       
         self.image = pygame.image.load(filename).convert()
   
-        # Make our top-left corner the passed-in location.
+        
         self.rect = self.image.get_rect()
         self.rect.top = y
         self.rect.left = x
         self.prev_x = x
         self.prev_y = y
 
-    # Clear the speed of the player
+    
     def prevdirection(self):
         self.prev_x = self.change_x
         self.prev_y = self.change_y
 
-    # Change the speed of the player
+    # Spelētāja ātrums
     def changespeed(self,x,y):
         self.change_x+=x
         self.change_y+=y
           
-    # Find a new position for the player
+   
     def update(self,walls,gate):
-        # Get the old position, in case we need to go back to it
+        
         
         old_x=self.rect.left
         new_x=old_x+self.change_x
@@ -167,7 +162,7 @@ class Player(pygame.sprite.Sprite):
         new_y=old_y+self.change_y
         prev_y=old_y+self.prev_y
 
-        # Did this update cause us to hit a wall?
+        
         x_collide = pygame.sprite.spritecollide(self, walls, False)
         if x_collide:
             # Whoops, hit a wall. Go back to the old position
@@ -182,7 +177,7 @@ class Player(pygame.sprite.Sprite):
 
             self.rect.top = new_y
 
-            # Did this update cause us to hit a wall?
+            
             y_collide = pygame.sprite.spritecollide(self, walls, False)
             if y_collide:
                 # Whoops, hit a wall. Go back to the old position
@@ -200,9 +195,9 @@ class Player(pygame.sprite.Sprite):
             self.rect.left=old_x
             self.rect.top=old_y
 
-#Inheritime Player klassist
+
 class Ghost(Player):
-    # Change the speed of the ghost
+    # Spoku pārvietojuma ātrums
     def changespeed(self,list,ghost,turn,steps,l):
       try:
         z=list[turn][2]
@@ -335,26 +330,25 @@ bl = len(Blinky_directions)-1
 il = len(Inky_directions)-1
 cl = len(Clyde_directions)-1
 
-# Call this function so the Pygame library can initialize itself
+# Lai Pygame bibliotēka varētu inicializēt sevi
 pygame.init()
   
-# Create an 606x606 sized screen
+# Ekrāna izmērs
 screen = pygame.display.set_mode([606, 606])
 
-# This is a list of 'sprites.' Each block in the program is
-# added to this list. The list is managed by a class called 'RenderPlain.'
 
 
-# Set the title of the window
+
+# Spēles nosaukums
 pygame.display.set_caption('Pacman')
 
-# Create a surface we can draw on
+# Virsmas izveide
 background = pygame.Surface(screen.get_size())
 
-# Used for converting color maps and such
+
 background = background.convert()
   
-# Fill the screen with a black background
+
 background.fill(black)
 
 
@@ -364,7 +358,7 @@ clock = pygame.time.Clock()
 pygame.font.init()
 font = pygame.font.Font("freesansbold.ttf", 24)
 
-#default locations for Pacman and monstas
+#pakmana un spoku atrasšanās vieta, jeb spawns
 w = 303-16 #Width
 p_h = (7*60)+19 #Pacman height
 m_h = (4*60)+19 #Monster height
@@ -400,7 +394,7 @@ def startGame():
   c_steps = 0
 
 
-  # Create the player paddle object
+  # Visi objekti
   Pacman = Player( w, p_h, "images/Trollman.png" )
   all_sprites_list.add(Pacman)
   pacman_collide.add(Pacman)
@@ -421,7 +415,7 @@ def startGame():
   monsta_list.add(Clyde)
   all_sprites_list.add(Clyde)
 
-  # Draw the grid
+  # režģis
   for row in range(19):
       for column in range(19):
           if (row == 7 or row == 8) and (column == 8 or column == 9 or column == 10):
@@ -429,7 +423,7 @@ def startGame():
           else:
             block = Block(yellow, 4, 4)
 
-            # Set a random location for the block
+            # Jaukt bkola lokācija
             block.rect.x = (30*column+6)+26
             block.rect.y = (30*row+6)+26
 
@@ -440,7 +434,7 @@ def startGame():
             elif p_collide:
               continue
             else:
-              # Add the block to the list of objects
+             
               block_list.add(block)
               all_sprites_list.add(block)
 
@@ -453,7 +447,7 @@ def startGame():
   i = 0
 
   while done == False:
-      # ALL EVENT PROCESSING SHOULD GO BELOW THIS COMMENT
+      
       for event in pygame.event.get():
           if event.type == pygame.QUIT:
               done=True
@@ -478,9 +472,7 @@ def startGame():
               if event.key == pygame.K_DOWN:
                   Pacman.changespeed(0,-30)
           
-      # ALL EVENT PROCESSING SHOULD GO ABOVE THIS COMMENT
-   
-      # ALL GAME LOGIC SHOULD GO BELOW THIS COMMENT
+      
       Pacman.update(wall_list,gate)
 
       returned = Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
@@ -507,16 +499,14 @@ def startGame():
       Clyde.changespeed(Clyde_directions,"clyde",c_turn,c_steps,cl)
       Clyde.update(wall_list,False)
 
-      # See if the Pacman block has collided with anything.
+      # Vai pakmans saskaras ar sienām
       blocks_hit_list = pygame.sprite.spritecollide(Pacman, block_list, True)
        
-      # Check the list of collisions.
+      # Kolīzija
       if len(blocks_hit_list) > 0:
           score +=len(blocks_hit_list)
       
-      # ALL GAME LOGIC SHOULD GO ABOVE THIS COMMENT
-   
-      # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
+      
       screen.fill(black)
         
       wall_list.draw(screen)
@@ -535,7 +525,7 @@ def startGame():
       if monsta_hit_list:
         doNext("Game Over",235,all_sprites_list,block_list,monsta_list,pacman_collide,wall_list,gate)
 
-      # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
+      
       
       pygame.display.flip()
     
@@ -543,7 +533,7 @@ def startGame():
 
 def doNext(message,left,all_sprites_list,block_list,monsta_list,pacman_collide,wall_list,gate):
   while True:
-      # ALL EVENT PROCESSING SHOULD GO BELOW THIS COMMENT
+      # Visas funkcijas
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
           pygame.quit()
@@ -559,13 +549,13 @@ def doNext(message,left,all_sprites_list,block_list,monsta_list,pacman_collide,w
             del gate
             startGame()
 
-      #Grey background
-      w = pygame.Surface((400,200))  # the size of your rect
-      w.set_alpha(10)                # alpha level
-      w.fill((128,128,128))           # this fills the entire surface
-      screen.blit(w, (100,200))    # (0,0) are the top-left coordinates
+      #Pelēks fons
+      w = pygame.Surface((400,200))  
+      w.set_alpha(10)                
+      w.fill((128,128,128))           
+      screen.blit(w, (100,200))    
 
-      #Won or lost
+      #Uzverāja vai zaudēja:(
       text1=font.render(message, True, white)
       screen.blit(text1, [left, 233])
 
